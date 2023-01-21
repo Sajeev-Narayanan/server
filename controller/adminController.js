@@ -24,27 +24,6 @@ const addAdmin = async (req, res) => {
 }
 
 
-// const adminLogin = (req, res) => { 
-//     console.log(req.body);
-//     const { name, password } = req.body;
-
-//     const admin = process.env.ADMIN_ID;
-//     const adPassword = process.env.ADMIN_PASSWORD
-
-//   if (name === admin && password === adPassword) {
-//     const user = { name: "admin" }
-//     const accessToken = jwt.sign(user,process.env.ADMIN_ACCESS_SECRET)
-//         res.status(201).json({
-//           message: `success`,
-//           accessToken : accessToken,
-//           });
-//     }else {
-//         res.status(400).json({
-//           message: `error`,
-//         });
-//       }
-// }
-
 
 const userData = async (req, res) => {
   // if (req.user == "admin") {

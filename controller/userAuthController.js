@@ -83,6 +83,33 @@ const login = async (req, res) => {
     }else{return res.sendStatus(403)}
 }
 
+const googleLogin = async (req, res) => { 
+    
+    
+    const email = req.body.email;
+    const data = { email: email }
+    const user = await User.find({ email });
+   
+    
+    if (user) {
+        
+            
+            const accessToken = generateUserAccessToken(data)
+            // const refreshToken = await jwt.sign(email, process.env.USER_REFRESH_SECRET, { expiresIn: '1d' })
+            const refreshToken = await jwt.sign(data, process.env.USER_REFRESH_SECRET, { expiresIn: '1d' })
+            
+           
+            await User.updateOne({ email }, { $push: { refreshToken: refreshToken } }, { upsert: true })
+           
+            // refreshTokens.push(refreshToken)
+            res.status(201).json({ accessToken: accessToken, refreshToken: refreshToken,user: email })
+        
+    }else{return res.sendStatus(403)}
+}
+
+
+
+
 const generateUserAccessToken = (user) => {
     
     return jwt.sign(user, process.env.USER_ACCESS_SECRET, { expiresIn: '5m' })
@@ -95,4 +122,5 @@ const generateUserAccessToken = (user) => {
 exports.userToken = userToken;
 exports.logout = logout;
 exports.login = login;
+exports.googleLogin = googleLogin;
 exports.generateUserAccessToken = generateUserAccessToken;

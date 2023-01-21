@@ -35,6 +35,26 @@ async function otpVerifyFunction(otp, mobile) {
       return { status: false };
     }
 }
+
+const googleSignup = async (req, res) => {
+  console.log(req.body)
+
+  const user = new User({
+    email:req.body.email
+  })
+  try {
+    await user.save();
+    res.status(200).json({
+      message: `success`,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ message: "error", error });
+  
+  }
+}
+
+exports.googleSignup = googleSignup;
   
 
 
