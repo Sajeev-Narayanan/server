@@ -46,8 +46,8 @@ const signupWithEmail = async (req, res) => {
       const provider = new Provider({
         companyname: req.body.providerData.companyName,
         description: req.body.providerData.description,
-        category: req.body.providerData.services,
-        place: req.body.providerData.place,
+        category: req.body.services,
+        place: req.body.place,
         email: req.body.providerData.email,
         mobile: req.body.providerData.phone,
           password: hash,

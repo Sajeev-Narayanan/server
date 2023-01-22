@@ -59,11 +59,15 @@ const logout = async (req, res) => {
 
 const login = async (req, res) => { 
     
+    console.log(req.body)
     
     const email = req.body.email;
     const password = req.body.password;
     const data = { email: email }
-    const provider = await Provider.find({ email });
+    try {
+        
+    const provider = await Provider.find({ email ,verified : true , approved : true});
+    console.log(provider)
    
     
     if (provider) {
@@ -73,22 +77,27 @@ const login = async (req, res) => {
             const accessToken = generateUserAccessToken(data)
            
             const refreshToken = await jwt.sign(data, process.env.PROVIDER_REFRESH_SECRET, { expiresIn: '1d' })
+
+            console.log(accessToken , refreshToken)
             
            
             await Provider.updateOne({ email }, { $push: { refreshToken: refreshToken } }, { upsert: true })
            
             // refreshTokens.push(refreshToken)
-            res.status(201).json({ accessToken: accessToken, refreshToken: refreshToken,user: email })
+            res.status(201).json({ accessToken: accessToken, refreshToken: refreshToken,managers: email })
         } else {
             return res.sendStatus(403)
         }
-    }else{return res.sendStatus(403)}
+    } else { return res.sendStatus(403) }
+} catch (error) {
+    return res.sendStatus(403) 
+}
 }
 
 
 
 const generateUserAccessToken = (user) => {
-    
+    console.log("##########$$$$$$$$$########")
     return jwt.sign(user, process.env.PROVIDER_ACCESS_SECRET, { expiresIn: '5m' })
 }
 
