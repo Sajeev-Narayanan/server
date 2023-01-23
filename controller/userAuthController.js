@@ -61,13 +61,12 @@ const login = async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
     const data = { email: email }
-    const user = await User.find({ email });
-   
+    const user = await User.findOne({ email, approved: true });
     
+   
     if (user) {
-        const validPassword = await bcrypt.compare(password, user[0].password);
+        const validPassword = await bcrypt.compare(password, user.password);
         if (validPassword) {
-            
             const accessToken = generateUserAccessToken(data)
             // const refreshToken = await jwt.sign(email, process.env.USER_REFRESH_SECRET, { expiresIn: '1d' })
             const refreshToken = await jwt.sign(data, process.env.USER_REFRESH_SECRET, { expiresIn: '1d' })
@@ -78,9 +77,9 @@ const login = async (req, res) => {
             // refreshTokens.push(refreshToken)
             res.status(201).json({ accessToken: accessToken, refreshToken: refreshToken,user: email })
         } else {
-            return res.sendStatus(403)
+            return res.status(403).json({message: 'error'})
         }
-    }else{return res.sendStatus(403)}
+    }else{return res.status(403).json({message: 'error'})}
 }
 
 const googleLogin = async (req, res) => { 
@@ -88,12 +87,10 @@ const googleLogin = async (req, res) => {
     
     const email = req.body.email;
     const data = { email: email }
-    const user = await User.find({ email });
+    const user = await User.findOne({ email,approved: true });
    
-    
-    if (user) {
-        
-            
+    console.log(user)
+    if (user != null) {
             const accessToken = generateUserAccessToken(data)
             // const refreshToken = await jwt.sign(email, process.env.USER_REFRESH_SECRET, { expiresIn: '1d' })
             const refreshToken = await jwt.sign(data, process.env.USER_REFRESH_SECRET, { expiresIn: '1d' })
@@ -104,7 +101,9 @@ const googleLogin = async (req, res) => {
             // refreshTokens.push(refreshToken)
             res.status(201).json({ accessToken: accessToken, refreshToken: refreshToken,user: email })
         
-    }else{return res.sendStatus(403)}
+    } else {
+       return res.status(403).json({ message: 'error' })
+    }
 }
 
 

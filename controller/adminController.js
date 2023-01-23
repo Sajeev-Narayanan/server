@@ -158,6 +158,36 @@ const unblockManagers = async (req, res) => {
   }
 }
 
+const blockUser = async (req, res) => { 
+  console.log(req.body)
+  const { id } = req.body;
+  try {
+    await User.findByIdAndUpdate(id, { approved: false });
+    res.status(200).json({
+      message: 'success',
+    })
+  } catch (error) {
+     res.status(400).json({
+      message: 'error',
+    })
+  }
+}
+
+const unblockUser = async (req, res) => { 
+  const { id } = req.body;
+  try {
+    await User.findByIdAndUpdate(id, { approved: true });
+    res.status(200).json({
+      message: 'success',
+    })
+  } catch (error) {
+     res.status(400).json({
+      message: 'error',
+    })
+  }
+}
+
+
 
 
 exports.addAdmin = addAdmin;
@@ -169,3 +199,5 @@ exports.approve = approve;
 exports.reject = reject;
 exports.blockManagers = blockManagers;
 exports.unblockManagers = unblockManagers;
+exports.blockUser = blockUser;
+exports.unblockUser = unblockUser;

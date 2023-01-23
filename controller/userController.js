@@ -40,7 +40,9 @@ const googleSignup = async (req, res) => {
   console.log(req.body)
 
   const user = new User({
-    email:req.body.email
+    email: req.body.email,
+    verified: true,
+    approved:true,
   })
   try {
     await user.save();
@@ -67,7 +69,7 @@ const signup = async (req, res) => {
         phone: req.body.phone,
         password: hash,
         verified: false,
-        approved:false,
+        approved:true,
     })
 
     try {
