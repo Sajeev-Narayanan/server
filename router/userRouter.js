@@ -13,6 +13,9 @@ userRouter.post('/login', userAuthController.login);
 userRouter.post('/googleLogin', userAuthController.googleLogin);
 userRouter.post('/logout', userAuthController.logout);
 userRouter.post('/userToken', userAuthController.userToken);
+userRouter.post('/forgotPassword', userControllers.forgotPassword);
+userRouter.post('/ChangePasswordOtp', userControllers.ChangePasswordOtp);
+userRouter.post('/changePassword', userControllers.changePassword);
 
 
 
