@@ -15,5 +15,8 @@ providerRouter.post("/managersToken", providerAuthController.managersToken);
 providerRouter.post("/forgotPassword", providerControllers.forgotPassword);
 providerRouter.post("/ChangePasswordOtp", providerControllers.ChangePasswordOtp);
 providerRouter.post("/changePassword", providerControllers.changePassword);
+providerRouter.post("/providerDetails", providerControllers.providerDetails);
+providerRouter.post("/addService", providerControllers.addService);
+providerRouter.post("/removeService", providerControllers.removeService);
 
 module.exports = providerRouter;

@@ -34,25 +34,27 @@ const userToken = async (req, res) => {
 
 const logout = async (req, res) => {
     const email = req.body.email
+    console.log(email + "############")
+    console.log( req.body.token+"############")
     const user = await User.findOne({email})
-    
+    console.log(user)
     let refreshTokens = user.refreshToken;
     const refreshTokens2 = refreshTokens.filter((token) => token !== req.body.token)
    
-    if (refreshTokens2[0] == null) {
+    if (refreshTokens2) {
     jwt.verify(req.body.token, process.env.USER_REFRESH_SECRET, async(err, user) => {
-            if (err) {
-                res.sendStatus(403);
+        if (err) {
+            res.status(403).json({ message: err });
                 
-                console.log(err)
-            }
-       
-        
-        await User.updateOne({ name: user.name }, { $set:{ refreshToken: [] } })
+            console.log(err)
+        } else {
+            await User.updateOne({ name: user.name }, { $set: { refreshToken: [] } })
+            res.status(204).json({ message: "success" })
+        }
       
         })
     }
-    res.sendStatus(204)
+    // res.status(204).json({message:"success"})
 }
 
 const login = async (req, res) => { 

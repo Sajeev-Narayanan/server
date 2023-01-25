@@ -230,7 +230,6 @@ const changePassword = async (req, res) => {
       userId: userId,
       token: passwordToken,
     });
-    console.log("<<<<<<<<<<"+token)
     if (!token) return res.status(400).send("Invalid link or expired");
     const hash = await bcrypt.hash(password, 5);
     provider.password = hash;
@@ -243,3 +242,43 @@ const changePassword = async (req, res) => {
   }
 };
 exports.changePassword = changePassword;
+
+
+const providerDetails = async (req, res) => {
+  // console.log(req.body)
+  try {
+    const provider = await Provider.findOne({email:req.body.email});
+    res.status(200).json({ data: provider });
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+}
+exports.providerDetails = providerDetails;
+
+const addService = async (req, res) => {
+  const { data, managers } = req.body;
+  console.log(data, managers);
+  if (data && managers) {
+    try {
+      await Provider.findOneAndUpdate({ email: managers }, { $push: { category: data } })
+      res.status(201).json({ message: "success" })
+    } catch (error) {
+      res.status(500).json({ message: error })
+    }
+  }else{res.status(500).json({ message: "error" })}
+}
+exports.addService = addService;
+
+const removeService = async (req, res) => {
+  const { data, managers } = req.body;
+  console.log(data, managers);
+  if (data && managers) {
+    try {
+      await Provider.findOneAndUpdate({ email: managers }, { $pull: { category: data } })
+      res.status(201).json({ message: "success" })
+    } catch (error) {
+      res.status(500).json({ message: error })
+    }
+  }else{res.status(500).json({ message: "error" })}
+}
+exports.removeService = removeService;

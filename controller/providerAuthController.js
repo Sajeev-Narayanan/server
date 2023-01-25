@@ -41,20 +41,19 @@ const logout = async (req, res) => {
     let refreshTokens = provider.refreshToken;
     const refreshTokens2 = refreshTokens.filter((token) => token !== req.body.token)
    
-    if (refreshTokens2[0] == null) {
+    if (refreshTokens2) {
     jwt.verify(req.body.token, process.env.PROVIDER_REFRESH_SECRET, async(err, user) => {
-            if (err) {
-                res.sendStatus(403);
+        if (err) {
                 
-                console.log(err)
-            }
+            res.status(403).json({ message: err });
+        } else {
        
         
-        await Provider.updateOne({ name: user.name }, { $set:{ refreshToken: [] } })
-      
+            await Provider.updateOne({ name: user.name }, { $set: { refreshToken: [] } })
+            res.status(204).json({ message: "success" })
+        }
         })
     }
-    res.sendStatus(204)
 }
 
 const login = async (req, res) => { 
