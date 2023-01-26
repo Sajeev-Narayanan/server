@@ -18,5 +18,10 @@ providerRouter.post("/changePassword", providerControllers.changePassword);
 providerRouter.post("/providerDetails", providerControllers.providerDetails);
 providerRouter.post("/addService", providerControllers.addService);
 providerRouter.post("/removeService", providerControllers.removeService);
+providerRouter.post("/addimage", providerControllers.addimage);
+providerRouter.post("/removeImage", providerControllers.removeImage);
+providerRouter.route("/editProfile")
+    .get( providerControllers.editProfileGet)
+    .put( providerControllers.editProfilePut);
 
 module.exports = providerRouter;

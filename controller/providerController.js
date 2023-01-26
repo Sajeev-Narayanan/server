@@ -282,3 +282,70 @@ const removeService = async (req, res) => {
   }else{res.status(500).json({ message: "error" })}
 }
 exports.removeService = removeService;
+
+const addimage = async (req, res) => {
+  const { imageUrl,managers } = req.body;
+  console.log(imageUrl,managers);
+  if (imageUrl,managers) {
+    try {
+      const result = await Provider.findOneAndUpdate({ email: managers }, { $push: { gallery: imageUrl } })
+      console.log(result)
+      res.status(201).json({ message: "success" })
+    } catch (error) {
+      res.status(500).json({ message: error })
+    }
+  }else{res.status(500).json({ message: "error" })}
+}
+exports.addimage = addimage;
+
+const removeImage = async (req, res) => {
+  const { imageUrl,managers } = req.body;
+  console.log(imageUrl,managers);
+  if (imageUrl,managers) {
+    try {
+      const result = await Provider.findOneAndUpdate({ email: managers }, { $pull: { gallery: imageUrl } })
+      console.log(result)
+      res.status(201).json({ message: "success" })
+    } catch (error) {
+      res.status(500).json({ message: error })
+    }
+  }else{res.status(500).json({ message: "error" })}
+}
+exports.removeImage = removeImage;
+
+const editProfileGet = async (req, res) => {
+  const { email } = req.query.managers;
+  console.log(email)
+  try {
+    const profile = await Provider.findOne(email);
+    profile ?
+      res.status(201).json({ profile }) :
+      res.status(500).json({message:"error"})
+  } catch (error) {
+    res.status(500).json({message:"error"})
+  }
+ 
+}
+
+exports.editProfileGet = editProfileGet;
+
+const editProfilePut = async (req, res) => {
+  console.log(req.body)
+  const {email,name,description,place} = req.body
+  if (req.body.coverPhotoUrl && req.body.profilePhotoUrl) {
+    try {
+      await Provider.findOneAndUpdate(email, { companyname: name, description: description, place: place, coverPhoto: req.body.coverPhotoUrl, profilePhoto: req.body.profilePhotoUrl })
+      res.status(201).json({message:"success"})
+    } catch (error) {
+      res.status(500).json({message:error})
+    }
+  } else {
+    try {
+     await Provider.findOneAndUpdate(email, { companyname: name, description: description, place: place, coverPhoto: "", profilePhoto: "" })
+     res.status(201).json({message:"success"})
+   } catch (error) {
+    res.status(500).json({message:error})
+   }
+  }
+}
+exports.editProfilePut = editProfilePut
