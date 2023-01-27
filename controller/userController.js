@@ -6,6 +6,7 @@ const { response } = require("express");
 const Token = require("../model/tokenModal");
 const crypto = require("crypto");
 const Joi = require("joi");
+const { Provider } = require("../model/eventManagerModel");
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const serviceSid = process.env.TWILIO_AUTH_SERVICE_SID;
@@ -252,3 +253,31 @@ const changePassword = async (req, res) => {
   }
 };
 exports.changePassword = changePassword;
+
+const findManagers = async (req, res) => {
+  const  service   = req.query.service;
+  
+  try {
+    const response = await Provider.find({ category: service  }) 
+    res.status(201).json(response)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: error })
+  }
+}
+exports.findManagers = findManagers;
+
+const managerProfile = async (req, res) => {
+  const  id  = req.query.id;
+  console.log(id,"&&&&&&&&&&&")
+  
+  try {
+    const response = await Provider.findById(id)
+    res.status(201).json(response)
+  
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: error })
+  }
+}
+exports.managerProfile = managerProfile;

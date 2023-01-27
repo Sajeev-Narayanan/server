@@ -16,6 +16,8 @@ userRouter.post('/userToken', userAuthController.userToken);
 userRouter.post('/forgotPassword', userControllers.forgotPassword);
 userRouter.post('/ChangePasswordOtp', userControllers.ChangePasswordOtp);
 userRouter.post('/changePassword', userControllers.changePassword);
+userRouter.get('/findManagers', userControllers.findManagers);
+userRouter.get('/managerProfile', userControllers.managerProfile);
 
 
 

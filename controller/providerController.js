@@ -314,10 +314,10 @@ const removeImage = async (req, res) => {
 exports.removeImage = removeImage;
 
 const editProfileGet = async (req, res) => {
-  const { email } = req.query.managers;
+  const email = req.query.managers;
   console.log(email)
   try {
-    const profile = await Provider.findOne(email);
+    const profile = await Provider.findOne({ email:email });
     profile ?
       res.status(201).json({ profile }) :
       res.status(500).json({message:"error"})
