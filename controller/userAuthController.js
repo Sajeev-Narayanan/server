@@ -71,7 +71,7 @@ const login = async (req, res) => {
         if (validPassword) {
             const accessToken = generateUserAccessToken(data)
             // const refreshToken = await jwt.sign(email, process.env.USER_REFRESH_SECRET, { expiresIn: '1d' })
-            const refreshToken = await jwt.sign(data, process.env.USER_REFRESH_SECRET, { expiresIn: '1d' })
+            const refreshToken = await jwt.sign(data, process.env.USER_REFRESH_SECRET, { expiresIn: '15d' })
             
            
             await User.updateOne({ email }, { $push: { refreshToken: refreshToken } }, { upsert: true })
@@ -95,7 +95,7 @@ const googleLogin = async (req, res) => {
     if (user != null) {
             const accessToken = generateUserAccessToken(data)
             // const refreshToken = await jwt.sign(email, process.env.USER_REFRESH_SECRET, { expiresIn: '1d' })
-            const refreshToken = await jwt.sign(data, process.env.USER_REFRESH_SECRET, { expiresIn: '1d' })
+            const refreshToken = await jwt.sign(data, process.env.USER_REFRESH_SECRET, { expiresIn: '15d' })
             
            
             await User.updateOne({ email }, { $push: { refreshToken: refreshToken } }, { upsert: true })

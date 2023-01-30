@@ -49,7 +49,7 @@ const logout = async (req, res) => {
         } else {
        
         
-            await Provider.updateOne({ name: user.name }, { $set: { refreshToken: [] } })
+            await Provider.updateOne({ name: provider.name }, { $set: { refreshToken: [] } })
             res.status(204).json({ message: "success" })
         }
         })
@@ -75,7 +75,7 @@ const login = async (req, res) => {
             
             const accessToken = generateUserAccessToken(data)
            
-            const refreshToken = await jwt.sign(data, process.env.PROVIDER_REFRESH_SECRET, { expiresIn: '1d' })
+            const refreshToken = await jwt.sign(data, process.env.PROVIDER_REFRESH_SECRET, { expiresIn: '15d' })
 
             console.log(accessToken , refreshToken)
             

@@ -255,10 +255,11 @@ const changePassword = async (req, res) => {
 exports.changePassword = changePassword;
 
 const findManagers = async (req, res) => {
-  const  service   = req.query.service;
+  const  {service,place}   = req.query;
+  console.log(place,service)
   
   try {
-    const response = await Provider.find({ category: service  }) 
+    const response = await Provider.find({ category: service ,place:place }) 
     res.status(201).json(response)
   } catch (error) {
     console.log(error)

@@ -27,24 +27,24 @@ const addAdmin = async (req, res) => {
 
 const userData = async (req, res) => {
   // if (req.user == "admin") {
-    try {
-      const managers = await User.find({ verified: true })
-      console.log(managers)
-      if (managers) {
-        res.status(200).json({
-          message: 'success',
-          data: managers,
-        })
-      }  else {
-        res.status(400).json({
-          message: 'error',
-        })
-      }
-    } catch (error) {
+  try {
+    const managers = await User.find({ verified: true })
+    console.log(managers)
+    if (managers) {
+      res.status(200).json({
+        message: 'success',
+        data: managers,
+      })
+    } else {
       res.status(400).json({
         message: 'error',
       })
     }
+  } catch (error) {
+    res.status(400).json({
+      message: 'error',
+    })
+  }
   // } else if (req.user == "expired") {
   //   console.log("yes%%")
   //   res.status(200).json({
@@ -55,24 +55,24 @@ const userData = async (req, res) => {
 
 const managerData = async (req, res) => {
   // if (req.user == "admin") {
-    try {
-      const managers = await Provider.find({ approved: false })
-      // console.log(managers)
-      if (managers) {
-        res.status(200).json({
-          message: 'success',
-          data: managers,
-        })
-      }  else {
-        res.status(400).json({
-          message: 'error',
-        })
-      }
-    } catch (error) {
+  try {
+    const managers = await Provider.find({ approved: false })
+    // console.log(managers)
+    if (managers) {
+      res.status(200).json({
+        message: 'success',
+        data: managers,
+      })
+    } else {
       res.status(400).json({
         message: 'error',
       })
     }
+  } catch (error) {
+    res.status(400).json({
+      message: 'error'
+    })
+  }
   // } else if (req.user == "expired") {
   //   console.log("yes%%")
   //   res.status(200).json({
@@ -81,10 +81,10 @@ const managerData = async (req, res) => {
   // }
 }
 
-const aprovedManagers = async (req, res) => { 
-  
+const aprovedManagers = async (req, res) => {
+
   try {
-    const managers = await Provider.find({approved: true})
+    const managers = await Provider.find({ approved: true })
     console.log(managers)
     if (managers) {
       res.status(200).json({
@@ -103,7 +103,7 @@ const aprovedManagers = async (req, res) => {
   }
 }
 
-const approve = async (req, res) => { 
+const approve = async (req, res) => {
   const { id } = req.body;
   try {
     await Provider.findByIdAndUpdate(id, { approved: true });
@@ -117,7 +117,7 @@ const approve = async (req, res) => {
   }
 }
 
-const reject = async (req, res) => { 
+const reject = async (req, res) => {
   const { id } = req.body;
   try {
     await Provider.findByIdAndDelete(id);
@@ -158,7 +158,7 @@ const unblockManagers = async (req, res) => {
   }
 }
 
-const blockUser = async (req, res) => { 
+const blockUser = async (req, res) => {
   console.log(req.body)
   const { id } = req.body;
   try {
@@ -167,13 +167,13 @@ const blockUser = async (req, res) => {
       message: 'success',
     })
   } catch (error) {
-     res.status(400).json({
+    res.status(400).json({
       message: 'error',
     })
   }
 }
 
-const unblockUser = async (req, res) => { 
+const unblockUser = async (req, res) => {
   const { id } = req.body;
   try {
     await User.findByIdAndUpdate(id, { approved: true });
@@ -181,7 +181,7 @@ const unblockUser = async (req, res) => {
       message: 'success',
     })
   } catch (error) {
-     res.status(400).json({
+    res.status(400).json({
       message: 'error',
     })
   }
