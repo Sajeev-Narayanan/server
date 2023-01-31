@@ -14,35 +14,35 @@ const client = require("twilio")(accountSid, authToken);
 
 
 async function sendOtp(mobile) {
-  console.log(mobile+"&&&&&&&&")
-    mobile = Number(mobile);
-  
-    try {
-      const verification = await client.verify.v2
-        .services(serviceSid)
-        .verifications.create({ to: `+91${mobile}`, channel: "sms" });
-      return { status: true, verification };
-    } catch (error) {
-      return { status: false, error };
-    }
-    console.log("verification", verification);
-    return { status: verification.status };
+  console.log(mobile + "&&&&&&&&")
+  mobile = Number(mobile);
+
+  try {
+    const verification = await client.verify.v2
+      .services(serviceSid)
+      .verifications.create({ to: `+91${mobile}`, channel: "sms" });
+    return { status: true, verification };
+  } catch (error) {
+    return { status: false, error };
+  }
+  console.log("verification", verification);
+  return { status: verification.status };
 }
-  
+
 
 async function otpVerifyFunction(otp, mobile) {
-  console.log(otp, mobile+"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-    const verification_check = await client.verify.v2
-      .services(serviceSid)
-      .verificationChecks.create({ to: `+91${mobile}`, code: otp });
-    console.log("verifcation ckeck otp  ", verification_check.status);
+  console.log(otp, mobile + "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+  const verification_check = await client.verify.v2
+    .services(serviceSid)
+    .verificationChecks.create({ to: `+91${mobile}`, code: otp });
+  console.log("verifcation ckeck otp  ", verification_check.status);
   if (verification_check.status == "approved") {
-      console.log("&&&&&&&&&&&&&&&&")
-      return { status: true };
+    console.log("&&&&&&&&&&&&&&&&")
+    return { status: true };
   } else {
     console.log(":::::::::::::::::::::::::")
-      return { status: false };
-    }
+    return { status: false };
+  }
 }
 
 const googleSignup = async (req, res) => {
@@ -51,7 +51,7 @@ const googleSignup = async (req, res) => {
   const user = new User({
     email: req.body.email,
     verified: true,
-    approved:true,
+    approved: true,
   })
   try {
     await user.save();
@@ -61,32 +61,32 @@ const googleSignup = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(400).json({ message: "error", error });
-  
+
   }
 }
 
 exports.googleSignup = googleSignup;
-  
+
 
 
 const signup = async (req, res) => {
-    console.log(req.body)
-    const hash = await bcrypt.hash(req.body.password, 5);
+  console.log(req.body)
+  const hash = await bcrypt.hash(req.body.password, 5);
 
-    const user = new User({
-        email: req.body.email,
-        phone: req.body.phone,
-        password: hash,
-        verified: false,
-        approved:true,
-    })
+  const user = new User({
+    email: req.body.email,
+    phone: req.body.phone,
+    password: hash,
+    verified: false,
+    approved: true,
+  })
 
-    try {
-          
-        await user.save();
-        
-        const response = await sendOtp(req.body.phone);
-     
+  try {
+
+    await user.save();
+
+    const response = await sendOtp(req.body.phone);
+
     if (response.status === true) {
       res.status(201).json({
         message: `success`,
@@ -108,25 +108,25 @@ const signup = async (req, res) => {
 exports.signup = signup;
 
 const otpVerify = async (req, res) => {
-    try {
-        const { mobile, otp } = req.body;
-        console.log(req.body)
+  try {
+    const { mobile, otp } = req.body;
+    console.log(req.body)
 
-      const response = await otpVerifyFunction(otp, mobile);
-      console.log("response of otp", response);
-      if (response.status === true) {
-        await User.updateOne({ phone:mobile }, { verified: true });
-        res.status(201).json({ message: "otp verification successful" });
-      } else {
-        res.status(400).json({ message: " invalid otp verification " });
-      }
-    } catch (error) {
-      console.log(error);
-      res.status(400).json({ message: "otp failed", error: error.massage });
+    const response = await otpVerifyFunction(otp, mobile);
+    console.log("response of otp", response);
+    if (response.status === true) {
+      await User.updateOne({ phone: mobile }, { verified: true });
+      res.status(201).json({ message: "otp verification successful" });
+    } else {
+      res.status(400).json({ message: " invalid otp verification " });
     }
-  };
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ message: "otp failed", error: error.massage });
+  }
+};
 exports.otpVerify = otpVerify;
-  
+
 
 const resendOtp = async (req, res) => {
   console.log(req.body);
@@ -147,7 +147,7 @@ const resendOtp = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-        res.status(400).json({ message: "error", error });
+    res.status(400).json({ message: "error", error });
   }
 }
 exports.resendOtp = resendOtp;
@@ -255,11 +255,11 @@ const changePassword = async (req, res) => {
 exports.changePassword = changePassword;
 
 const findManagers = async (req, res) => {
-  const  {service,place}   = req.query;
-  console.log(place,service)
-  
+  const { service, place } = req.query;
+  console.log(place, service)
+
   try {
-    const response = await Provider.find({ category: service ,place:place }) 
+    const response = await Provider.find({ category: service, place: place })
     res.status(201).json(response)
   } catch (error) {
     console.log(error)
@@ -269,16 +269,30 @@ const findManagers = async (req, res) => {
 exports.findManagers = findManagers;
 
 const managerProfile = async (req, res) => {
-  const  id  = req.query.id;
-  console.log(id,"&&&&&&&&&&&")
-  
+  const id = req.query.id;
+  console.log(id, "&&&&&&&&&&&")
+
   try {
     const response = await Provider.findById(id)
     res.status(201).json(response)
-  
+
   } catch (error) {
     console.log(error)
     res.status(500).json({ message: error })
   }
 }
 exports.managerProfile = managerProfile;
+
+const chatManagers = async (req, res) => {
+  console.log(req.params.id);
+  try {
+    const data = await Provider.findById({
+      _id: mongoose.Types.ObjectId(req.params.id),
+    });
+    res.status(200).json(data);
+  } catch (err) {
+    console.log(err);
+    res.status(404);
+  }
+};
+exports.chatManagers = chatManagers;
