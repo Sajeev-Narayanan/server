@@ -33,8 +33,6 @@ const userToken = async (req, res) => {
 
 const logout = async (req, res) => {
     const email = req.body.email
-    console.log(email + "############")
-    console.log(req.body.token + "############")
     const user = await User.findOne({ email })
     console.log(user)
     let refreshTokens = user.refreshToken;

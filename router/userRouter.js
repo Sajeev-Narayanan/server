@@ -19,6 +19,7 @@ userRouter.post('/changePassword', userControllers.changePassword);
 userRouter.get('/findManagers', userControllers.findManagers);
 userRouter.get('/managerProfile', userControllers.managerProfile);
 userRouter.get('/chatManagers/:id', userControllers.chatManagers);
+userRouter.post('/estimateData', userControllers.estimateData);
 
 
 

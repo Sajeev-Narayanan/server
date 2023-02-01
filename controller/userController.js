@@ -7,6 +7,7 @@ const Token = require("../model/tokenModal");
 const crypto = require("crypto");
 const Joi = require("joi");
 const { Provider } = require("../model/eventManagerModel");
+const { Estimate } = require("../model/estimateModel");
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const serviceSid = process.env.TWILIO_AUTH_SERVICE_SID;
@@ -228,9 +229,6 @@ const changePassword = async (req, res) => {
     const { error } = schema.validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
     const { password, userId, passwordToken } = req.body;
-    console.log(password);
-    console.log(userId);
-    console.log(passwordToken);
 
     const user = await User.findById(userId);
     if (!user)
@@ -256,7 +254,6 @@ exports.changePassword = changePassword;
 
 const findManagers = async (req, res) => {
   const { service, place } = req.query;
-  console.log(place, service)
 
   try {
     const response = await Provider.find({ category: service, place: place })
@@ -270,7 +267,6 @@ exports.findManagers = findManagers;
 
 const managerProfile = async (req, res) => {
   const id = req.query.id;
-  console.log(id, "&&&&&&&&&&&")
 
   try {
     const response = await Provider.findById(id)
@@ -284,7 +280,6 @@ const managerProfile = async (req, res) => {
 exports.managerProfile = managerProfile;
 
 const chatManagers = async (req, res) => {
-  console.log(req.params.id);
   try {
     const data = await Provider.findById({
       _id: mongoose.Types.ObjectId(req.params.id),
@@ -296,3 +291,24 @@ const chatManagers = async (req, res) => {
   }
 };
 exports.chatManagers = chatManagers;
+
+const estimateData = async (req, res) => {
+  const { userId, managerId } = req.body;
+  console.log(userId, "+++++++", managerId);
+  try {
+    const data = await Estimate.findOne({ userId: mongoose.Types.ObjectId(userId), managerId: mongoose.Types.ObjectId(managerId) })
+    console.log("data.....", data)
+    if (data != null) {
+      res.status(201).json(data)
+    } else {
+      res.json({
+        message: "error"
+      })
+    }
+
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: error })
+  }
+}
+exports.estimateData = estimateData;

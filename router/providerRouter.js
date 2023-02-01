@@ -7,7 +7,7 @@ const { Provider } = require("../model/eventManagerModel");
 const providerRouter = express.Router();
 
 providerRouter.post("/managerLogin", providerAuthController.login);
-providerRouter.post("/signupEmail",providerControllers.signupWithEmail);
+providerRouter.post("/signupEmail", providerControllers.signupWithEmail);
 providerRouter.post("/otpVerify", providerControllers.otpVerify);
 providerRouter.post("/resendOtp", providerControllers.resendOtp);
 providerRouter.post("/managersLogout", providerAuthController.logout);
@@ -21,7 +21,9 @@ providerRouter.post("/removeService", providerControllers.removeService);
 providerRouter.post("/addimage", providerControllers.addimage);
 providerRouter.post("/removeImage", providerControllers.removeImage);
 providerRouter.route("/editProfile")
-    .get( providerControllers.editProfileGet)
-    .put( providerControllers.editProfilePut);
+    .get(providerControllers.editProfileGet)
+    .put(providerControllers.editProfilePut);
+providerRouter.get("/chatUsers/:id", providerControllers.chatUsers);
+providerRouter.post("/addEstimate", providerControllers.addEstimate);
 
 module.exports = providerRouter;
