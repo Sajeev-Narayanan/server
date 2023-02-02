@@ -16,6 +16,7 @@ const providerRoutes = require("./router/providerRouter");
 const adminRoutes = require("./router/adminRouter");
 const chatRoutes = require("./router/chatRouter");
 const messageRoutes = require("./router/messageRouter");
+const paymentRouter = require("./router/paymentRouter");
 
 // ****************************************************
 const app = express();
@@ -54,6 +55,7 @@ app.use("/provider", providerRoutes)
 app.use("/admin", adminRoutes);
 app.use("/chat", chatRoutes);
 app.use("/message", messageRoutes);
+app.use("/payment", paymentRouter)
 
 
 

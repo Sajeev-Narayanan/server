@@ -21,6 +21,7 @@ const estimateSchema = new schema(
             required: true,
             trim: true
         },
+        paid: { type: Boolean, default: false }
     },
     { timestamps: true }
 );
