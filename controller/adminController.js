@@ -7,6 +7,7 @@ const { response } = require("express");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { User } = require("../model/userModal");
+const { Estimate } = require("../model/estimateModel");
 
 const addAdmin = async (req, res) => {
   console.log(req.body);
@@ -187,6 +188,18 @@ const unblockUser = async (req, res) => {
   }
 }
 
+const transactions = async (req, res) => {
+  console.log("<<<<<<object>>>>>>")
+  try {
+    const result = await Estimate.find({ paid: true })
+    console.log("????????")
+    res.status(201).json(result);
+  } catch (error) {
+    console.log("::::::::")
+    res.status(500).json(error);
+  }
+}
+
 
 
 
@@ -201,3 +214,4 @@ exports.blockManagers = blockManagers;
 exports.unblockManagers = unblockManagers;
 exports.blockUser = blockUser;
 exports.unblockUser = unblockUser;
+exports.transactions = transactions

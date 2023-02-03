@@ -25,5 +25,6 @@ providerRouter.route("/editProfile")
     .put(providerControllers.editProfilePut);
 providerRouter.get("/chatUsers/:id", providerControllers.chatUsers);
 providerRouter.post("/addEstimate", providerControllers.addEstimate);
+providerRouter.get("/estimateDetails/:userId/:managerId", providerControllers.estimateDetails)
 
 module.exports = providerRouter;

@@ -343,12 +343,10 @@ const editProfilePut = async (req, res) => {
 exports.editProfilePut = editProfilePut
 
 const chatUsers = async (req, res) => {
-  console.log("chat userssssss", req.params.id);
   try {
     const data = await User.findById({
       _id: mongoose.Types.ObjectId(req.params.id),
     });
-    console.log("!!!!!!!!!!!!!!!!!", data)
     res.status(200).json(data);
   } catch (err) {
     console.log(err);
@@ -371,3 +369,16 @@ const addEstimate = async (req, res) => {
   }
 }
 exports.addEstimate = addEstimate;
+
+const estimateDetails = async (req, res) => {
+  const { userId, managerId } = req.params;
+  console.log("@@@@@@@@", userId, managerId);
+  try {
+    const result = await Estimate.find({ userId, managerId })
+    res.status(201).json(result)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json(error);
+  }
+}
+exports.estimateDetails = estimateDetails;

@@ -10,6 +10,7 @@ adminRouter.post('/addAdmin', adminControllers.addAdmin);
 adminRouter.get('/userData', adminControllers.userData);
 adminRouter.get("/managerData", adminControllers.managerData);
 adminRouter.get("/aprovedManagers", adminControllers.aprovedManagers);
+adminRouter.get("/transactions", adminControllers.transactions);
 adminRouter.post("/approve", adminControllers.approve);
 adminRouter.post("/reject", adminControllers.reject);
 adminRouter.post("/blockManagers", adminControllers.blockManagers);
