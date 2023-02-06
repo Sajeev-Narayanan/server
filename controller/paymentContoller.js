@@ -17,11 +17,10 @@ exports.config = (req, res) => {
 
 exports.createPaymentIntent = async (req, res) => {
     const { payAmount } = req.body
-    console.log("{{{{{{payAmount}}}}}}", payAmount)
     try {
         const paymentIntent = await stripe.paymentIntents.create({
             currency: "INR",
-            amount: payAmount * 100,
+            amount: payAmount,
             description: "SprklingStories payment",
             payment_method_types: ["card"],
         });

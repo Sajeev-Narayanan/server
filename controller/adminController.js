@@ -27,7 +27,7 @@ const addAdmin = async (req, res) => {
 
 
 const userData = async (req, res) => {
-  // if (req.user == "admin") {
+
   try {
     const managers = await User.find({ verified: true })
     console.log(managers)
@@ -46,19 +46,14 @@ const userData = async (req, res) => {
       message: 'error',
     })
   }
-  // } else if (req.user == "expired") {
-  //   console.log("yes%%")
-  //   res.status(200).json({
-  //     message: 'expired',
-  //   })
-  // }
+
 }
 
 const managerData = async (req, res) => {
-  // if (req.user == "admin") {
+
   try {
     const managers = await Provider.find({ approved: false })
-    // console.log(managers)
+
     if (managers) {
       res.status(200).json({
         message: 'success',
@@ -74,12 +69,6 @@ const managerData = async (req, res) => {
       message: 'error'
     })
   }
-  // } else if (req.user == "expired") {
-  //   console.log("yes%%")
-  //   res.status(200).json({
-  //     message: 'expired',
-  //   })
-  // }
 }
 
 const aprovedManagers = async (req, res) => {
@@ -189,13 +178,10 @@ const unblockUser = async (req, res) => {
 }
 
 const transactions = async (req, res) => {
-  console.log("<<<<<<object>>>>>>")
   try {
     const result = await Estimate.find({ paid: true })
-    console.log("????????")
     res.status(201).json(result);
   } catch (error) {
-    console.log("::::::::")
     res.status(500).json(error);
   }
 }

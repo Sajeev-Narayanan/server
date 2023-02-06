@@ -15,7 +15,6 @@ const client = require("twilio")(accountSid, authToken);
 
 
 async function sendOtp(mobile) {
-  console.log(mobile + "&&&&&&&&")
   mobile = Number(mobile);
 
   try {
@@ -32,16 +31,12 @@ async function sendOtp(mobile) {
 
 
 async function otpVerifyFunction(otp, mobile) {
-  console.log(otp, mobile + "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
   const verification_check = await client.verify.v2
     .services(serviceSid)
     .verificationChecks.create({ to: `+91${mobile}`, code: otp });
-  console.log("verifcation ckeck otp  ", verification_check.status);
   if (verification_check.status == "approved") {
-    console.log("&&&&&&&&&&&&&&&&")
     return { status: true };
   } else {
-    console.log(":::::::::::::::::::::::::")
     return { status: false };
   }
 }
@@ -294,10 +289,9 @@ exports.chatManagers = chatManagers;
 
 const estimateData = async (req, res) => {
   const { userId, managerId } = req.body;
-  console.log(userId, "+++++++", managerId);
   try {
-    const data = await Estimate.findOne({ userId: mongoose.Types.ObjectId(userId), managerId: mongoose.Types.ObjectId(managerId) })
-    console.log("data.....", data)
+    const data = await Estimate.find({ userId: mongoose.Types.ObjectId(userId), managerId: mongoose.Types.ObjectId(managerId) })
+
     if (data != null) {
       res.status(201).json(data)
     } else {
