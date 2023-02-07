@@ -10,7 +10,6 @@ const { User } = require("../model/userModal");
 const { Estimate } = require("../model/estimateModel");
 
 const addAdmin = async (req, res) => {
-  console.log(req.body);
   const hash = await bcrypt.hash(req.body.password, 5);
 
   const admin = new Admin({
@@ -19,8 +18,9 @@ const addAdmin = async (req, res) => {
   })
   try {
     await admin.save();
+    res.status(200);
   } catch (error) {
-    console.log(error)
+    res.status(500);
   }
 }
 
@@ -30,7 +30,6 @@ const userData = async (req, res) => {
 
   try {
     const managers = await User.find({ verified: true })
-    console.log(managers)
     if (managers) {
       res.status(200).json({
         message: 'success',
@@ -75,7 +74,6 @@ const aprovedManagers = async (req, res) => {
 
   try {
     const managers = await Provider.find({ approved: true })
-    console.log(managers)
     if (managers) {
       res.status(200).json({
         message: 'success',
@@ -149,7 +147,6 @@ const unblockManagers = async (req, res) => {
 }
 
 const blockUser = async (req, res) => {
-  console.log(req.body)
   const { id } = req.body;
   try {
     await User.findByIdAndUpdate(id, { approved: false });
@@ -190,7 +187,6 @@ const transactions = async (req, res) => {
 
 
 exports.addAdmin = addAdmin;
-// exports.adminLogin = adminLogin;
 exports.userData = userData;
 exports.managerData = managerData;
 exports.aprovedManagers = aprovedManagers;

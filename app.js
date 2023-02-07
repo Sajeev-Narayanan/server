@@ -59,9 +59,6 @@ app.use("/payment", paymentRouter)
 
 
 
-// app.get("*", (req, res, next) => {
-//     res.send("ALL DONE 😍👍");
-//   });
 
 
 

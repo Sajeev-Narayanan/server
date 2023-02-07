@@ -23,8 +23,6 @@ const managersToken = async (req, res) => {
     jwt.verify(refreshToken, process.env.PROVIDER_REFRESH_SECRET, (err, user) => {
         if (err) {
             res.sendStatus(403);
-
-            console.log(err)
         }
 
         const accessToken = generateUserAccessToken({ name: user.name })
@@ -41,23 +39,16 @@ const logout = async (req, res) => {
     const refreshTokens2 = refreshTokens.filter((token) => token !== req.body.token)
 
     if (refreshTokens2) {
-        jwt.verify(req.body.token, process.env.PROVIDER_REFRESH_SECRET, async (err, user) => {
-            if (err) {
+        await Provider.updateOne({ _id: provider._id }, { $set: { refreshToken: [] } })
+        res.status(204).json({ message: "success" })
 
-                res.status(403).json({ message: err });
-            } else {
-
-
-                await Provider.updateOne({ name: provider.name }, { $set: { refreshToken: [] } })
-                res.status(204).json({ message: "success" })
-            }
-        })
+    } else {
+        res.status(204).json({ message: "success" })
     }
 }
 
 const login = async (req, res) => {
 
-    console.log(req.body)
 
     const email = req.body.email;
     const password = req.body.password;
@@ -65,8 +56,6 @@ const login = async (req, res) => {
     try {
 
         const provider = await Provider.findOne({ email, verified: true, approved: true });
-        console.log(provider)
-
 
         if (provider) {
             const validPassword = await bcrypt.compare(password, provider.password);
@@ -76,12 +65,10 @@ const login = async (req, res) => {
 
                 const refreshToken = await jwt.sign(data, process.env.PROVIDER_REFRESH_SECRET, { expiresIn: '15d' })
 
-                console.log(accessToken, refreshToken)
 
 
                 await Provider.updateOne({ email }, { $push: { refreshToken: refreshToken } }, { upsert: true })
 
-                // refreshTokens.push(refreshToken)
                 res.status(201).json({ accessToken: accessToken, refreshToken: refreshToken, managers: email, managerId: provider._id })
             } else {
                 return res.sendStatus(403)

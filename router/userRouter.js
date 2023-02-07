@@ -2,6 +2,7 @@ const express = require("express");
 const { check } = require("express-validator");
 const userControllers = require("../controller/userController");
 const userAuthController = require("../controller/userAuthController");
+const { authenticateToken } = require("../middleware/userAuth");
 
 const userRouter = express.Router();
 
@@ -16,10 +17,10 @@ userRouter.post('/userToken', userAuthController.userToken);
 userRouter.post('/forgotPassword', userControllers.forgotPassword);
 userRouter.post('/ChangePasswordOtp', userControllers.ChangePasswordOtp);
 userRouter.post('/changePassword', userControllers.changePassword);
-userRouter.get('/findManagers', userControllers.findManagers);
-userRouter.get('/managerProfile', userControllers.managerProfile);
-userRouter.get('/chatManagers/:id', userControllers.chatManagers);
-userRouter.post('/estimateData', userControllers.estimateData);
+userRouter.get('/findManagers', authenticateToken, userControllers.findManagers);
+userRouter.get('/managerProfile', authenticateToken, userControllers.managerProfile);
+userRouter.get('/chatManagers/:id', authenticateToken, userControllers.chatManagers);
+userRouter.post('/estimateData', authenticateToken, userControllers.estimateData);
 
 
 

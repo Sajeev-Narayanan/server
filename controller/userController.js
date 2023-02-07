@@ -25,7 +25,6 @@ async function sendOtp(mobile) {
   } catch (error) {
     return { status: false, error };
   }
-  console.log("verification", verification);
   return { status: verification.status };
 }
 
@@ -42,7 +41,7 @@ async function otpVerifyFunction(otp, mobile) {
 }
 
 const googleSignup = async (req, res) => {
-  console.log(req.body)
+
 
   const user = new User({
     email: req.body.email,
@@ -55,7 +54,6 @@ const googleSignup = async (req, res) => {
       message: `success`,
     });
   } catch (error) {
-    console.log(error);
     res.status(400).json({ message: "error", error });
 
   }
@@ -66,7 +64,6 @@ exports.googleSignup = googleSignup;
 
 
 const signup = async (req, res) => {
-  console.log(req.body)
   const hash = await bcrypt.hash(req.body.password, 5);
 
   const user = new User({
@@ -95,7 +92,6 @@ const signup = async (req, res) => {
       });
     }
   } catch (error) {
-    console.log(error);
     res.status(400).json({ message: "error", error });
   }
 }
@@ -106,10 +102,8 @@ exports.signup = signup;
 const otpVerify = async (req, res) => {
   try {
     const { mobile, otp } = req.body;
-    console.log(req.body)
 
     const response = await otpVerifyFunction(otp, mobile);
-    console.log("response of otp", response);
     if (response.status === true) {
       await User.updateOne({ phone: mobile }, { verified: true });
       res.status(201).json({ message: "otp verification successful" });
@@ -117,7 +111,6 @@ const otpVerify = async (req, res) => {
       res.status(400).json({ message: " invalid otp verification " });
     }
   } catch (error) {
-    console.log(error);
     res.status(400).json({ message: "otp failed", error: error.massage });
   }
 };
@@ -125,7 +118,6 @@ exports.otpVerify = otpVerify;
 
 
 const resendOtp = async (req, res) => {
-  console.log(req.body);
   try {
     const { mobile } = req.body;
     const response = await sendOtp(mobile)
@@ -142,7 +134,6 @@ const resendOtp = async (req, res) => {
       });
     }
   } catch (error) {
-    console.log(error);
     res.status(400).json({ message: "error", error });
   }
 }
@@ -156,7 +147,6 @@ const forgotPassword = async (req, res) => {
       approved: true,
     });
     if (user) {
-      console.log("the user need to be forgot password", user);
       const response = await sendOtp(mobile);
       if (response.status === true) {
         res
@@ -173,7 +163,6 @@ const forgotPassword = async (req, res) => {
       res.status(400).json(`there is no user with mobile number${mobile}`);
     }
   } catch (error) {
-    console.log(error);
     res.status(500).json("server addichu poy, call the developer");
   }
 };
@@ -183,7 +172,6 @@ const ChangePasswordOtp = async (req, res) => {
   try {
     const { mobile, otp } = req.body;
     const response = await otpVerifyFunction(otp, mobile);
-    console.log("response of otp", response);
     if (response.status === true) {
       const user = await User.findOne({
         phone: mobile,
@@ -238,10 +226,8 @@ const changePassword = async (req, res) => {
     const hash = await bcrypt.hash(password, 5);
     user.password = hash;
     await user.save();
-    // await passwordToken.delete();
     res.status(201).json("password changed successfully");
   } catch (error) {
-    console.error(error);
     res.status(500).json("server addichu poy, call the developer");
   }
 };
@@ -254,7 +240,6 @@ const findManagers = async (req, res) => {
     const response = await Provider.find({ category: service, place: place })
     res.status(201).json(response)
   } catch (error) {
-    console.log(error)
     res.status(500).json({ message: error })
   }
 }
@@ -268,7 +253,6 @@ const managerProfile = async (req, res) => {
     res.status(201).json(response)
 
   } catch (error) {
-    console.log(error)
     res.status(500).json({ message: error })
   }
 }
@@ -281,7 +265,6 @@ const chatManagers = async (req, res) => {
     });
     res.status(200).json(data);
   } catch (err) {
-    console.log(err);
     res.status(404);
   }
 };
@@ -301,7 +284,6 @@ const estimateData = async (req, res) => {
     }
 
   } catch (error) {
-    console.log(error)
     res.status(500).json({ message: error })
   }
 }

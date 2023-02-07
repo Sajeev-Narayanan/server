@@ -22,7 +22,6 @@ const userToken = async (req, res) => {
         if (err) {
             res.sendStatus(403);
 
-            console.log(err)
         }
 
         const accessToken = generateUserAccessToken({ name: user.name })
@@ -34,24 +33,17 @@ const userToken = async (req, res) => {
 const logout = async (req, res) => {
     const email = req.body.email
     const user = await User.findOne({ email })
-    console.log(user)
     let refreshTokens = user.refreshToken;
     const refreshTokens2 = refreshTokens.filter((token) => token !== req.body.token)
 
     if (refreshTokens2) {
-        jwt.verify(req.body.token, process.env.USER_REFRESH_SECRET, async (err, user) => {
-            if (err) {
-                res.status(403).json({ message: err });
 
-                console.log(err)
-            } else {
-                await User.updateOne({ name: user.name }, { $set: { refreshToken: [] } })
-                res.status(204).json({ message: "success" })
-            }
+        await User.updateOne({ _id: user._id }, { $set: { refreshToken: [] } })
+        res.status(204).json({ message: "success" })
 
-        })
+    } else {
+        res.status(204).json({ message: "success" })
     }
-    // res.status(204).json({message:"success"})
 }
 
 const login = async (req, res) => {
@@ -67,13 +59,11 @@ const login = async (req, res) => {
         const validPassword = await bcrypt.compare(password, user.password);
         if (validPassword) {
             const accessToken = generateUserAccessToken(data)
-            // const refreshToken = await jwt.sign(email, process.env.USER_REFRESH_SECRET, { expiresIn: '1d' })
             const refreshToken = await jwt.sign(data, process.env.USER_REFRESH_SECRET, { expiresIn: '15d' })
 
 
             await User.updateOne({ email }, { $push: { refreshToken: refreshToken } }, { upsert: true })
 
-            // refreshTokens.push(refreshToken)
             res.status(201).json({ accessToken: accessToken, refreshToken: refreshToken, user: email, id: user._id })
         } else {
             return res.status(403).json({ message: 'error' })
@@ -91,13 +81,11 @@ const googleLogin = async (req, res) => {
     console.log(user)
     if (user != null) {
         const accessToken = generateUserAccessToken(data)
-        // const refreshToken = await jwt.sign(email, process.env.USER_REFRESH_SECRET, { expiresIn: '1d' })
         const refreshToken = await jwt.sign(data, process.env.USER_REFRESH_SECRET, { expiresIn: '15d' })
 
 
         await User.updateOne({ email }, { $push: { refreshToken: refreshToken } }, { upsert: true })
 
-        // refreshTokens.push(refreshToken)
         res.status(201).json({ accessToken: accessToken, refreshToken: refreshToken, user: email, id: user._id })
 
     } else {
