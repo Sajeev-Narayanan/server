@@ -350,11 +350,13 @@ const addEstimate = async (req, res) => {
   }
 }
 exports.addEstimate = addEstimate;
-
 const estimateDetails = async (req, res) => {
+  console.log("{{{{{{}}}}}}}}")
   const { userId, managerId } = req.params;
+  console.log(userId, "+++", managerId)
   try {
     const result = await Estimate.find({ userId, managerId })
+    console.log("{{{{object}}}}", result)
     res.status(201).json(result)
   } catch (error) {
     res.status(500).json(error);

@@ -22,7 +22,8 @@ exports.createPaymentIntent = async (req, res) => {
             currency: "INR",
             amount: payAmount,
             description: "SprklingStories payment",
-            payment_method_types: ["card"],
+            automatic_payment_methods: { enabled: true },
+            // payment_method_types: ["card", "wechat_pay"],
         });
 
         // Send publishable key and PaymentIntent details to client
