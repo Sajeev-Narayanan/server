@@ -7,7 +7,6 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY, {
 });
 
 exports.config = (req, res) => {
-    console.log("payment request kiteee")
     res.send({
         publishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
     });
@@ -20,7 +19,7 @@ exports.createPaymentIntent = async (req, res) => {
     try {
         const paymentIntent = await stripe.paymentIntents.create({
             currency: "INR",
-            amount: payAmount,
+            amount: payAmount * 100,
             description: "SprklingStories payment",
             automatic_payment_methods: { enabled: true },
             // payment_method_types: ["card", "wechat_pay"],
