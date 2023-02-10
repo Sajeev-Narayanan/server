@@ -377,7 +377,6 @@ const orderDescription = async (req, res) => {
   try {
     const result = await Estimate.findByIdAndUpdate(id, { description: description })
     result.description = description
-    console.log("f#ck", result)
     res.status(201).json(result)
   } catch (error) {
     res.status(500).json(error)
