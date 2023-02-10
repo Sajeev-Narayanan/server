@@ -1,11 +1,12 @@
 const { Message } = require("../model/messageModel");
 
 exports.addMessage = async (req, res) => {
-    const { chatId, senderId, text } = req.body;
+    const { chatId, senderId, text, type } = req.body;
     const message = new Message({
         chatId,
         senderId,
         text,
+        type,
     });
     try {
         const result = await message.save();

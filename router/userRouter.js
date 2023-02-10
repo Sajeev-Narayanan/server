@@ -21,6 +21,7 @@ userRouter.get('/findManagers', authenticateToken, userControllers.findManagers)
 userRouter.get('/managerProfile', authenticateToken, userControllers.managerProfile);
 userRouter.get('/chatManagers/:id', authenticateToken, userControllers.chatManagers);
 userRouter.post('/estimateData', authenticateToken, userControllers.estimateData);
+userRouter.get('/orders/:Id', authenticateToken, userControllers.orders);
 
 
 

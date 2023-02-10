@@ -288,3 +288,14 @@ const estimateData = async (req, res) => {
   }
 }
 exports.estimateData = estimateData;
+
+const orders = async (req, res) => {
+  const { Id } = req.params;
+  try {
+    const result = await Estimate.find({ userId: Id })
+    res.status(201).json(result)
+  } catch (error) {
+    res.status(500).json(error)
+  }
+}
+exports.orders = orders;

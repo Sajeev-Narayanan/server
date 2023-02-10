@@ -26,6 +26,8 @@ providerRouter.route("/editProfile")
     .put(authenticateToken, providerControllers.editProfilePut);
 providerRouter.get("/chatUsers/:id", authenticateToken, providerControllers.chatUsers);
 providerRouter.post("/addEstimate", authenticateToken, providerControllers.addEstimate);
-providerRouter.get("/estimateDetails/:userId/:managerId", authenticateToken, providerControllers.estimateDetails)
+providerRouter.get("/estimateDetails/:userId/:managerId", authenticateToken, providerControllers.estimateDetails);
+providerRouter.get("/orders/:Id", authenticateToken, providerControllers.orders);
+providerRouter.post("/orderDescription", authenticateToken, providerControllers.orderDescription);
 
 module.exports = providerRouter;
