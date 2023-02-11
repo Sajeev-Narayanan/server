@@ -184,6 +184,43 @@ const transactions = async (req, res) => {
 }
 
 
+const dashboard = async (req, res) => {
+  try {
+    const users = await User.count();
+    const managers = await Provider.count();
+    const transactions = await Estimate.count({ paid: true });
+    const graphData = {
+      "chart": {
+        "caption": "DASHBOARD",
+        "yAxisName": "Count",
+        // "theme": "fusion"
+      },
+      "data": [
+        {
+          "label": "No.Users",
+          "value": users
+        },
+        {
+          "label": "No.Managers",
+          "value": managers
+        },
+        {
+          "label": "No.Transactions",
+          "value": transactions
+        },
+      ]
+    };
+    res.status(201).json(graphData)
+
+  } catch (error) {
+    response.status(500).json(error)
+  }
+
+
+}
+
+
+
 
 
 exports.addAdmin = addAdmin;
@@ -197,3 +234,4 @@ exports.unblockManagers = unblockManagers;
 exports.blockUser = blockUser;
 exports.unblockUser = unblockUser;
 exports.transactions = transactions
+exports.dashboard = dashboard

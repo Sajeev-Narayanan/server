@@ -4,7 +4,6 @@ const adminControllers = require("../controller/adminController");
 const adAuthController = require("../controller/adminAuthController");
 const adminAuth = require("../middleware/adminAuth")
 const adminRouter = express.Router();
-
 adminRouter.post('/addAdmin', adminControllers.addAdmin);
 // adminRouter.post("/adminLogin", adminControllers.adminLogin);
 adminRouter.get('/userData', adminAuth.authenticateToken, adminControllers.userData);
@@ -17,6 +16,7 @@ adminRouter.post("/blockManagers", adminAuth.authenticateToken, adminControllers
 adminRouter.post("/unblockManagers", adminAuth.authenticateToken, adminControllers.unblockManagers);
 adminRouter.post("/blockUser", adminAuth.authenticateToken, adminControllers.blockUser);
 adminRouter.post("/unblockUser", adminAuth.authenticateToken, adminControllers.unblockUser);
+adminRouter.get("/dashboard", adminControllers.dashboard);
 adminRouter.post("/adminLogout", adAuthController.adminLogout);
 adminRouter.post("/adminLogin", adAuthController.adminLogin);
 
